@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <title>EviCloud - Evidence List</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+    body {
+      font-family: 'Roboto', sans-serif, 'Times New Roman';
+      margin: 0;
+      padding: 0;
+      background-color: #f0f2f5;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: rgba(13, 71, 161, 0.9);
+      color: #ffffff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    header .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+
+    header .logo img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    header nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+    }
+
+    header nav ul li a {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    header nav ul li a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      flex: 1;
+      padding: 40px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #1a237e;
+      text-align: center;
+    }
+
+    .search-box {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .search-box input {
+      width: 60%;
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 14px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #1a237e;
+      color: white;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    footer {
+      background-color: rgba(13, 71, 161, 0.9);
+      color: #ffffff;
+      text-align: center;
+      padding: 15px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="Emblem_of_India_(navy_blue).svg.png" alt="Emblem of India">
+                  EviCloud
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="app.html">Dashboard</a></li>
+        <li><a href="eupload.html">Upload Evidence</a></li>
+        <li><a href="eulist.html">Evidence List</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Uploaded Evidence List</h1>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search evidence by name or ID...">
+    </div>
+
+    <table id="evidenceTable">
+      <thead>
+        <tr>
+          <th>Evidence ID</th>
+          <th>File Name</th>
+          <th>Uploaded By</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>EVD-001</td>
+          <td>adhar_card.pdf</td>
+          <td>Admin</td>
+          <td>2025-08-20</td>
+        </tr>
+        <tr>
+          <td>EVD-002</td>
+          <td>driving_license.jpg</td>
+          <td>User123</td>
+          <td>2025-08-21</td>
+        </tr>
+        <tr>
+          <td>EVD-003</td>
+          <td>passport_scan.pdf</td>
+          <td>User456</td>
+          <td>2025-08-23</td>
+        </tr>
+        <tr>
+          <td>EVD-004</td>
+          <td>land_record.pdf</td>
+          <td>Officer1</td>
+          <td>2025-08-24</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+            &copy; 2025 EviCloud, Government of India | All Rights Reserved.
+  </footer>
+
+  <script>
+    // Simple search function
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+      const filter = this.value.toLowerCase();
+      const rows = document.querySelectorAll("#evidenceTable tbody tr");
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(filter) ? "" : "none";
+      });
+    });
+  </script>
+
+</body>
+</html>

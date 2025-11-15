@@ -1,0 +1,515 @@
+\<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - EviCloud</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* General Body and Background Styling */
+        body {
+            font-family: 'Roboto', sans-serif, 'Times New Roman';
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        /* Header Styling (Repeated for consistency) */
+        header {
+            background-color: rgba(13, 71, 161, 0.8);
+            color: #ffffff;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease-in-out;
+            backdrop-filter: blur(5px);
+        }
+
+        header.header-scrolled {
+            background-color: rgba(13, 71, 161, 0.95);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            padding: 15px 40px;
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        header .logo img {
+            height: 50px;
+            margin-right: 15px;
+        }
+
+        header nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        header nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: 0.3s;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        header nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #fff;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        header nav ul li a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* Main Content Styling */
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 120px 60px 60px;
+            position: relative;
+        }
+
+        .dashboard-container {
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 1200px;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: #1a237e;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .dashboard-card h3 {
+            font-size: 1.2rem;
+            margin-top: 0;
+            color: #1a237e;
+        }
+
+        .dashboard-card p {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .dashboard-card .card-icon {
+            font-size: 2.5rem;
+            color: #0d47a1;
+            margin-bottom: 10px;
+        }
+        
+        .recent-documents {
+            text-align: left;
+        }
+        
+        .recent-documents h2 {
+            font-size: 1.8rem;
+            color: #1a237e;
+            margin-bottom: 20px;
+        }
+        
+        .documents-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .documents-table th, .documents-table td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .documents-table th {
+            background-color: #f2f2f2;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .documents-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .btn {
+            background-color: #1a237e;
+            color: #fff;
+            padding: 14px 30px;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            background-color: #0d47a1;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Footer Styling (Repeated for consistency) */
+        footer {
+            background-color: rgba(13, 71, 161, 0.8);
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav-toggle {
+            display: none;
+        }
+
+        .mobile-nav {
+            display: none;
+        }
+
+        /* ----- RESPONSIVE DESIGN: MEDIA QUERIES ----- */
+
+        /* Styles for Tablets (e.g., screen widths up to 768px) */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px 20px;
+            }
+
+            header nav ul {
+                flex-direction: column;
+                gap: 10px;
+                margin-top: 10px;
+            }
+            
+            .content {
+                padding: 120px 30px 30px;
+            }
+
+            .dashboard-container {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Styles for Mobile Phones (e.g., screen widths up to 480px) */
+        @media (max-width: 480px) {
+            header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px;
+            }
+            
+            header nav {
+                display: none;
+            }
+
+            .mobile-nav-toggle {
+                display: block;
+                color: #fff;
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+
+            .mobile-nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(13, 71, 161, 0.95);
+                backdrop-filter: blur(10px);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+                z-index: 999;
+            }
+
+            .mobile-nav.active {
+                transform: translateX(0);
+            }
+
+            .mobile-nav ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 25px;
+                text-align: center;
+            }
+
+            .mobile-nav a {
+                color: #fff;
+                font-size: 1.5rem;
+                font-weight: 500;
+                text-decoration: none;
+            }
+            
+            .content {
+                padding: 100px 15px 15px;
+            }
+
+            .dashboard-container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .documents-table thead {
+                display: none;
+            }
+            
+            .documents-table tr {
+                display: block;
+                margin-bottom: 10px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+            }
+            
+            .documents-table td {
+                display: block;
+                text-align: right;
+                font-size: 0.9rem;
+                border-bottom: none;
+                position: relative;
+            }
+            
+            .documents-table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                width: 50%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+                font-weight: 500;
+                color: #1a237e;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <video autoplay loop muted class="background-video">
+        <source src="homepage.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <header>
+        <div class="logo">
+            <img src="Emblem_of_India_(navy_blue).svg.png" alt="Emblem of India">
+            <div>EviCloud</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="app.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="eupload.html"><i class="fas fa-upload"></i> Upload Evidence</a></li>
+                <li><a href="eulist.html"><i class="fas fa-list-ul"></i> Evidence List</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-nav-toggle" onclick="toggleNav()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <div class="mobile-nav">
+        <div class="mobile-nav-toggle" onclick="toggleNav()" style="position: absolute; top: 20px; right: 20px;">
+            <i class="fas fa-times"></i>
+        </div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="app.html">Dashboard</a></li>
+            <li><a href="eupload.html">Upload Evidence</a></li>
+            <li><a href="eulist.html">Evidence List</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="dashboard-container">
+            <h1>Your Dashboard</h1>
+            
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="card-icon"><i class="fas fa-file-alt"></i></div>
+                    <h3>Total Documents</h3>
+                    <p>128</p>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <h3>Last Upload</h3>
+                    <p>2 days ago</p>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Security Status</h3>
+                    <p style="color: #28a745;">Secure</p>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-icon"><i class="fas fa-user"></i></div>
+                    <h3>Account Type</h3>
+                    <p>Verified</p>
+                </div>
+            </div>
+            
+            <div class="recent-documents">
+                <h2>Recent Documents</h2>
+                <table class="documents-table">
+                    <thead>
+                        <tr>
+                            <th>Document Name</th>
+                            <th>Date Uploaded</th>
+                            <th>File Type</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Document Name">Aadhaar Card</td>
+                            <td data-label="Date Uploaded">2025-08-25</td>
+                            <td data-label="File Type">PDF</td>
+                            <td data-label="Status" style="color: #28a745;">Verified</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Document Name">Passport Copy</td>
+                            <td data-label="Date Uploaded">2025-08-20</td>
+                            <td data-label="File Type">JPG</td>
+                            <td data-label="Status" style="color: #ffc107;">Pending</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Document Name">PAN Card</td>
+                            <td data-label="Date Uploaded">2025-08-15</td>
+                            <td data-label="File Type">PNG</td>
+                            <td data-label="Status" style="color: #28a745;">Verified</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 EviCloud, Government of India | All Rights Reserved.
+    </footer>
+
+    <script>
+        // Smooth header transition on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+
+        // Toggles the mobile navigation menu
+        function toggleNav() {
+            const mobileNav = document.querySelector('.mobile-nav');
+            mobileNav.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

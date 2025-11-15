@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - EviCloud</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* General Body and Background Styling */
+        body {
+            font-family: 'Roboto', sans-serif, 'Times New Roman';
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        /* Header Styling (Repeated for consistency) */
+        header {
+            background-color: rgba(13, 71, 161, 0.8);
+            color: #ffffff;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease-in-out;
+            backdrop-filter: blur(5px);
+        }
+
+        header.header-scrolled {
+            background-color: rgba(13, 71, 161, 0.95);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            padding: 15px 40px;
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        header .logo img {
+            height: 50px;
+            margin-right: 15px;
+        }
+
+        header nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        header nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: 0.3s;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        header nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #fff;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        header nav ul li a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* Main Content Styling */
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 120px 60px 60px;
+            position: relative;
+        }
+        
+        .about-section {
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: #1a237e;
+        }
+        
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: wheat;
+            margin-bottom: 30px;
+        }
+        
+        .about-media {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .about-photo, .about-video {
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .about-photo img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .about-video video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Footer Styling (Repeated for consistency) */
+        footer {
+            background-color: rgba(13, 71, 161, 0.8);
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav-toggle {
+            display: none;
+        }
+
+        .mobile-nav {
+            display: none;
+        }
+
+        /* ----- RESPONSIVE DESIGN: MEDIA QUERIES ----- */
+
+        /* Styles for Tablets (e.g., screen widths up to 768px) */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px 20px;
+            }
+
+            header nav ul {
+                flex-direction: column;
+                gap: 10px;
+                margin-top: 10px;
+            }
+            
+            .content {
+                padding: 120px 30px 30px;
+            }
+
+            .about-section {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Styles for Mobile Phones (e.g., screen widths up to 480px) */
+        @media (max-width: 480px) {
+            header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px;
+            }
+            
+            header nav {
+                display: none;
+            }
+
+            .mobile-nav-toggle {
+                display: block;
+                color: #fff;
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+
+            .mobile-nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(13, 71, 161, 0.95);
+                backdrop-filter: blur(10px);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+                z-index: 999;
+            }
+
+            .mobile-nav.active {
+                transform: translateX(0);
+            }
+
+            .mobile-nav ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 25px;
+                text-align: center;
+            }
+
+            .mobile-nav a {
+                color: #fff;
+                font-size: 1.5rem;
+                font-weight: 500;
+                text-decoration: none;
+            }
+            
+            .content {
+                padding: 100px 15px 15px;
+            }
+
+            .about-section {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <video autoplay loop muted class="background-video">
+        <source src="homepage.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <header>
+        <div class="logo">
+            <img src="Emblem_of_India_(navy_blue).svg.png" alt="Emblem of India">
+            <div>EviCloud</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="app.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="eupload.html"><i class="fas fa-upload"></i> Upload Evidence</a></li>
+                <li><a href="eulist.html"><i class="fas fa-list-ul"></i> Evidence List</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+             </ul>
+        </nav>
+        <div class="mobile-nav-toggle" onclick="toggleNav()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <div class="mobile-nav">
+        <div class="mobile-nav-toggle" onclick="toggleNav()" style="position: absolute; top: 20px; right: 20px;">
+            <i class="fas fa-times"></i>
+        </div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="app.html">Dashboard</a></li>
+            <li><a href="eupload.html">Upload Evidence</a></li>
+            <li><a href="eulist.html">Evidence List</a></li>
+            <li><a href="about.html">About Us</a></li>
+            
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="about-section">
+            <h1>About EviCloud</h1>
+            <p class="about-text">
+                सुरक्षित दस्तावेज़ (Surakshit Dastavej), or "Secure Documents," is a groundbreaking initiative by the Government of India under the Digital India campaign. Our mission is to provide a secure and reliable platform for citizens to store and manage their crucial documents digitally. We leverage cutting-edge technology and robust encryption to ensure your data remains confidential and accessible only to you. Our platform is designed to be user-friendly, promoting ease of use while upholding the highest standards of data security.
+            </p>
+            <div class="about-media">
+                <div class="about-photo">
+                    <img src="https://placehold.co/800x450/355E8D/ffffff?text=EviCloud+Team+Photo" alt="EviCloud Team Photo">
+                </div>
+                <div class="about-video">
+                    <video controls muted autoplay loop>
+                        <source src="homepage.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 EviCloud, Government of India | All Rights Reserved.
+    </footer>
+
+    <script>
+        // Smooth header transition on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+
+        // Toggles the mobile navigation menu
+        function toggleNav() {
+            const mobileNav = document.querySelector('.mobile-nav');
+            mobileNav.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
